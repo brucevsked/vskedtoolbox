@@ -1,0 +1,44 @@
+﻿利用java的管道重定义。核心代码如下，剩下自己组织
+
+Process process = Runtime.getRuntime().exec("cmd"); 
+PrintWriter out = new PrintWriter(process.getOutputStream());
+String cmd ; //你的cmd命令
+InputStream is = process.getInputStream() //cmd返回出来的信息
+out.println(cmd); //输入你的命令
+out.flush(); //写到控制台
+追问
+您好,试了一下您说的这一种.发现回来的process.getOutputStream()输出流为空    因为输入的这条cmd指令需要后续的操作(输入密码,或者确定)才能有相应.
+追答
+//以下部分写成线程监控控制台返回的信息
+		byte[] buf = new byte[1024];  
+        int size;  
+        while(true) {  
+            try {  
+                while((size = is.read(buf)) != -1) {  
+                	//获取到第一次cmd返回的信息，然后根据返回后的信息再做第二次cmd写入
+                    System.out.println(new String(buf,0,size,"GB2312")); 
+                }  
+            } catch (IOException e) {  
+                e.printStackTrace();  
+                break;  
+            }  
+        } 
+
+====================================================
+通过线程监视控制台返回给你的信息，然后对控制台进行第二次输入
+或者你可以每次输入参数后获取一下控制台返回给你的信息再做操作
+====================================================
+请注意，process.getOutputStream()获取的是你的输入参数
+
+process.getInputStream() 是在你输入参数之后，获取控制台返回给你的信息
+
+然后再次out.println(cmd);
+out.flush();
+之后再次获取控制台返回给你的信息。
+追问
+您好,我试了一下,还是字节为空,  可能是我没有说清楚.   一条指令需要一些参数才能执行成功,但现在我这个指令是没有参数的(比如要输入密码,确定取消等) ,因为没有后续操作,所以上一条的指令还在阻塞等参数,我获得到的为空可能是因为没有执行结束吧?
+
+我想做的是输入一条无参数的指令,然后在后边追加参数
+追答
+。。。。。。
+在阻塞状态下你再次输入你的参数不就行了。。。。提示的话你完全可以在java端做。。
