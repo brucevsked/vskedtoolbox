@@ -1,27 +1,21 @@
 package com.jat.system2.model;
 
+import java.util.List;
+
 public class RoleNavigation {
     private Role role;
-    private Navigation navigation;
+    private List<Navigation> navigations;
 
-    public RoleNavigation(Role role, Navigation navigation) {
+    public RoleNavigation(Role role, List<Navigation> navigations) {
         this.role = role;
-        this.navigation = navigation;
+        this.navigations = navigations;
     }
 
     public Role getRole() {
         return role;
     }
 
-    public Navigation getNavigation() {
-        return navigation;
-    }
-
-    @Override
-    public String toString() {
-        return "{" +
-                "role=" + role +
-                ", navigation=" + navigation +
-                '}';
+    public List<Navigation> getNavigations() {
+        return navigations;
     }
 }
